@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "913261676870",
+    "project_id": "social-4c45a",
+    "storage_bucket": "social-4c45a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913261676870:android:00c55812c79dd45550bd47",
+        "android_client_info": {
+          "package_name": "com.akash.social"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913261676870-ucc4e7bav5odcjrm1sa7e6jsm1mph3oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvhly8DfhAugnVyAKPinWVnmoVm27wT9Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913261676870-ucc4e7bav5odcjrm1sa7e6jsm1mph3oc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
