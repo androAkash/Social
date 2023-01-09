@@ -13,6 +13,7 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInBinding.inflate(layoutInflater)
+        setTheme(R.style.Theme_Social)
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -54,6 +55,7 @@ class SignInActivity : AppCompatActivity() {
         if (firebaseAuth.currentUser != null){
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

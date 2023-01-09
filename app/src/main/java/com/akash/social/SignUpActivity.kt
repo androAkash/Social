@@ -14,6 +14,7 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_Social)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
 
         firebaseAuth = FirebaseAuth.getInstance()
