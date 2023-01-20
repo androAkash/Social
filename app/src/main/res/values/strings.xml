@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Social</string>
+    <string name="floatingnumber">floatingNumber</string>
 </resources>

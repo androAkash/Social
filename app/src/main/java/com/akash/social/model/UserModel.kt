@@ -1,4 +1,9 @@
 package com.akash.social.model
 
-class UserModel {
+data class UserModel(
+    val uid : String="",
+    val username : String ="",
+    val bio : String = "",
+    val imageUrl : String =""
+) {
 }
