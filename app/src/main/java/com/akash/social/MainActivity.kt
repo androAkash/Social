@@ -15,7 +15,7 @@ import com.akash.social.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navController : NavController
+    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Social)
@@ -26,28 +26,32 @@ class MainActivity : AppCompatActivity() {
 
         binding.navigationView.background = null
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
 
-        setupWithNavController(binding.navigationView,navController)
+        setupWithNavController(binding.navigationView, navController)
 
-
+        binding.btnFloating.setOnClickListener {
+            val intent = Intent(this@MainActivity, PostActivity::class.java)
+            startActivity(intent)
+        }
     }
     //Navigate to ProfileActivity
 
-    private fun navigateToProfile(){
+    private fun navigateToProfile() {
         val intent = Intent(this@MainActivity, ProfileActivity::class.java)
         startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.profile_menu,menu)
+        menuInflater.inflate(R.menu.profile_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId){
+        when (item.itemId) {
             R.id.profile_activity -> navigateToProfile()
         }
 

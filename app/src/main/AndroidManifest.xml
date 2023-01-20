@@ -13,6 +13,9 @@
         android:theme="@style/splashScreenTheme"
         tools:targetApi="31">
         <activity
+            android:name=".PostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false">
             <meta-data
