@@ -5,5 +5,4 @@ data class UserModel(
     val username : String ="",
     val bio : String = "",
     val imageUrl : String =""
-) {
-}
+)
