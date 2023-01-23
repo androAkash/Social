@@ -3,12 +3,11 @@ package com.akash.social.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.akash.social.R
 import com.akash.social.databinding.PostListBinding
-import com.akash.social.model.PostModel
+import com.akash.social.model.Post
 import com.akash.social.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -17,8 +16,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 
-class PostAdapter(private val postList: ArrayList<PostModel>) :
+class PostAdapter(private val postList: ArrayList<Post>) :
     RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     private var firebaseUser: FirebaseUser? = null
@@ -31,9 +31,12 @@ class PostAdapter(private val postList: ArrayList<PostModel>) :
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         firebaseUser = FirebaseAuth.getInstance().currentUser
+
         val currentPost = postList[position]
-        Picasso.get().load(currentPost.postImage).into(holder.binding.ivPost)
-        holder.binding.tvPostDescription.text = currentPost.description
+        Picasso.get().load(currentPost.getPostImage()).into(holder.binding.ivPost)
+        holder.binding.tvPostDescription.text = currentPost.getDescription()
+
+        publisherInfo(holder.binding.ivUser,holder.binding.tvUsername,currentPost.getPublisher())
 
     }
 
@@ -45,8 +48,12 @@ class PostAdapter(private val postList: ArrayList<PostModel>) :
         val binding = PostListBinding.bind(itemView)
     }
 
-    private fun publisherInfo(profilePicture: ImageView, username: TextView) {
-        val userRef = FirebaseDatabase.getInstance().reference.child("users")
+    private fun publisherInfo(
+        profilePicture: CircleImageView,
+        username: TextView,
+        publisherId: String
+    ) {
+        val userRef = FirebaseDatabase.getInstance().reference.child("users").child(publisherId)
 
         userRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {

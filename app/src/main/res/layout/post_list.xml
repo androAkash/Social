@@ -21,7 +21,7 @@
                 android:layout_height="36dp"
                 android:gravity="center">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_user"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
@@ -90,7 +90,7 @@
                 android:src="@drawable/heart" />
 
             <TextView
-                android:id="@+id/likeCountTxt"
+                android:id="@+id/publisher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"

@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.akash.social.R
 import com.akash.social.adapter.PostAdapter
 import com.akash.social.databinding.FragmentHomeBinding
+import com.akash.social.model.Post
 import com.akash.social.model.PostModel
 import com.google.firebase.database.*
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var postList : ArrayList<PostModel>
+    private lateinit var postList : ArrayList<Post>
     private lateinit var dbRef: DatabaseReference
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +42,7 @@ class HomeFragment : Fragment() {
                 postList.clear()
                 if (snapshot.exists()){
                     for (postSnap in snapshot.children){
-                        val postData = postSnap.getValue(PostModel::class.java)
+                        val postData = postSnap.getValue(Post::class.java)
                         postList.add(postData!!)
                     }
                     val postAdapter = PostAdapter(postList)
