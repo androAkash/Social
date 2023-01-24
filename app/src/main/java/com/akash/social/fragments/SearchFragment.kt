@@ -1,60 +1,109 @@
 package com.akash.social.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.akash.social.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.akash.social.adapter.UserAdapter
+import com.akash.social.databinding.FragmentSearchBinding
+import com.akash.social.model.UserModel
+import com.google.firebase.database.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding : FragmentSearchBinding
+    private lateinit var userList : ArrayList<UserModel>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
-    }
+        binding = FragmentSearchBinding.inflate(layoutInflater)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        userList = arrayListOf()
+
+        binding.searchFragmentRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.searchFragmentRecyclerView.setHasFixedSize(true)
+
+        binding.SearchET.addTextChangedListener(object : TextWatcher{
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (binding.SearchET.toString() == ""){
+
+                }
+                else{
+                    binding.searchFragmentRecyclerView.visibility = View.VISIBLE
+
+                    retrieveUser()
+                    searchUser(p0.toString())
+
                 }
             }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+
+        return binding.root
+    }
+
+    private fun searchUser(input:String){
+        val query = FirebaseDatabase.getInstance().reference.child("users")
+            .orderByChild("username")
+            .startAt(input)
+            .endAt(input + "\uf8ff")
+
+        query.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                userList.clear()
+
+                for (existingSnapshot in snapshot.children){
+                    val user = existingSnapshot.getValue(UserModel::class.java)
+
+                    if (user != null){
+                        userList.add(user)
+                    }
+                    val userAdapter = UserAdapter(userList)
+                    binding.searchFragmentRecyclerView.adapter = userAdapter
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    private fun retrieveUser() {
+        val userRef = FirebaseDatabase.getInstance().reference.child("users")
+        userRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (binding.SearchET.text.toString() == ""){
+                    userList.clear()
+
+                    for (existingSnapshot in snapshot.children){
+                        val user = existingSnapshot.getValue(UserModel::class.java)
+                        if (user != null){
+                            userList.add(user)
+                        }
+                    }
+                    val userAdapter = UserAdapter(userList)
+                    binding.searchFragmentRecyclerView.adapter = userAdapter
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }

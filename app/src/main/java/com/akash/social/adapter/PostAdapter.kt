@@ -59,8 +59,8 @@ class PostAdapter(private val postList: ArrayList<Post>) :
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()){
                     val user = snapshot.getValue<UserModel>(UserModel::class.java)
-                    Picasso.get().load(user!!.imageUrl).placeholder(R.drawable.person).into(profilePicture)
-                    username.text = user.username
+                    Picasso.get().load(user!!.getImageUrl()).placeholder(R.drawable.person).into(profilePicture)
+                    username.text = user.getUsername()
                 }
             }
 

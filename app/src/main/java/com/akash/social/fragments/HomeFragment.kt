@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.akash.social.R
 import com.akash.social.adapter.PostAdapter
 import com.akash.social.databinding.FragmentHomeBinding
 import com.akash.social.model.Post
-import com.akash.social.model.PostModel
 import com.google.firebase.database.*
 
 class HomeFragment : Fragment() {
@@ -48,6 +46,7 @@ class HomeFragment : Fragment() {
                     val postAdapter = PostAdapter(postList)
                     binding.homeRecyclerView.adapter = postAdapter
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
