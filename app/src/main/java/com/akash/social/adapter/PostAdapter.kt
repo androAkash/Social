@@ -3,6 +3,7 @@ package com.akash.social.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.akash.social.R
@@ -22,6 +23,7 @@ class PostAdapter(private val postList: ArrayList<Post>) :
     RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     private var firebaseUser: FirebaseUser? = null
+//    private var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val itemView =
@@ -36,8 +38,77 @@ class PostAdapter(private val postList: ArrayList<Post>) :
         Picasso.get().load(currentPost.getPostImage()).into(holder.binding.ivPost)
         holder.binding.tvPostDescription.text = currentPost.getDescription()
 
+        checkingLikedPosts(currentPost.getPostId(),holder.binding.tvLike)
+
+        holder.binding.tvLike.setOnClickListener {
+            if (holder.binding.tvLike.text.toString() == "LikePost"){
+                firebaseUser?.uid.let { it1->
+                    FirebaseDatabase.getInstance().reference
+                        .child("LikePost").child(it1.toString())
+                        .child("PostLiked").child(currentPost.getPostId())
+                        .setValue(true).addOnCompleteListener { task->
+                            if (task.isSuccessful){
+                                firebaseUser?.uid.let{it2->
+                                    FirebaseDatabase.getInstance().reference
+                                        .child("LikePost").child(currentPost.getPostId())
+                                        .child("AlreadyLikedPosts").child(it2.toString())
+                                        .setValue(true).addOnCompleteListener { task->
+                                            if (task.isSuccessful){
+
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                }
+            }
+            else{
+                firebaseUser?.uid.let { it1->
+                    FirebaseDatabase.getInstance().reference
+                        .child("LikePost").child(it1.toString())
+                        .child("PostLiked").child(currentPost.getPostId())
+                        .removeValue().addOnCompleteListener { task->
+                            if (task.isSuccessful){
+                                firebaseUser?.uid.let{it2->
+                                    FirebaseDatabase.getInstance().reference
+                                        .child("LikePost").child(currentPost.getPostId())
+                                        .child("AlreadyLikedPosts").child(it2.toString())
+                                        .removeValue().addOnCompleteListener { task->
+                                            if (task.isSuccessful){
+
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                }
+            }
+        }
+
         publisherInfo(holder.binding.ivUser,holder.binding.tvUsername,currentPost.getPublisher())
 
+    }
+
+    private fun checkingLikedPosts(postId: String, tvLike: Button) {
+        val likedPostRef = firebaseUser?.uid.let { it1 ->
+            FirebaseDatabase.getInstance().reference
+                .child("LikePost").child(it1.toString())
+                .child("PostLiked")
+        }
+        likedPostRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.child(postId).exists()){
+                    tvLike.text = "PostLiked"
+                }
+                else{
+                    tvLike.text = "LikePost"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     override fun getItemCount(): Int {
