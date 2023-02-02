@@ -18,6 +18,9 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class PostActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostBinding
@@ -49,14 +52,9 @@ class PostActivity : AppCompatActivity() {
 
     private fun uploadPosts() {
         when {
-            myImageUri == null -> Toast.makeText(
-                this,
-                "Please select an image for post by clicking the drawable", Toast.LENGTH_SHORT
-            ).show()
+            myImageUri == null -> Toast.makeText(this, "Please select an image for post by clicking the drawable", Toast.LENGTH_SHORT).show()
             TextUtils.isEmpty(binding.descriptionEt.text.toString()) -> Toast.makeText(
-                this,
-                "Please give a description for the post", Toast.LENGTH_SHORT
-            ).show()
+                this, "Please give a description for the post", Toast.LENGTH_SHORT).show()
 
             else -> {
 
@@ -89,6 +87,9 @@ class PostActivity : AppCompatActivity() {
                         val downloadUrl = post.result
                         myUrl = downloadUrl.toString()
 
+                        val currentTime:String = SimpleDateFormat("HH:mm a", Locale.getDefault()).format(Date())
+                        val currentDate:String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
+
                         val ref = FirebaseDatabase.getInstance().reference.child("Post")
                         val postId = ref.push().key
 
@@ -97,6 +98,8 @@ class PostActivity : AppCompatActivity() {
                         postMap["description"] = binding.descriptionEt.text.toString()
                         postMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
                         postMap["postImage"] = myUrl
+                        postMap["currentTime"] = currentTime
+                        postMap["currentDate"] = currentDate
                         ref.child(postId!!).updateChildren(postMap)
 
                         Toast.makeText(this, "Post Uploaded successFully", Toast.LENGTH_SHORT).show()

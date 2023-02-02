@@ -5,13 +5,17 @@ class Post {
     private var postImage: String =""
     private var publisher: String =""
     private var description: String =""
+    private var currentDate: String =""
+    private var currentTime: String =""
 
     constructor()
-    constructor(postId: String, postImage: String, publisher: String, description: String) {
+    constructor(postId: String, postImage: String, publisher: String, description: String, date : String, time:String) {
         this.postId = postId
         this.postImage = postImage
         this.publisher = publisher
         this.description = description
+        this.currentDate = date
+        this.currentTime = time
     }
 
     fun getPostId():String{
@@ -27,6 +31,13 @@ class Post {
         return description
     }
 
+    fun getDate():String{
+        return currentDate
+    }
+    fun getTime():String{
+        return currentTime
+    }
+
     fun setPostId(postId:String){
         this.postId = postId
     }
@@ -38,5 +49,12 @@ class Post {
     }
     fun setPublisher(publisher:String){
         this.publisher = publisher
+    }
+
+    fun setCurrentTime(currentTime: String){
+        this.currentTime = currentTime
+    }
+    fun setCurrentDate(currentDate: String){
+        this.currentDate = currentDate
     }
 }
