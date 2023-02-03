@@ -42,5 +42,29 @@
         app:layout_anchor="@id/bottomAppBar"
         android:contentDescription="@string/floatingnumber" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ft_btn_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="invisible"
+        app:backgroundTint="@color/yellow"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="100dp"
+        app:srcCompat="@drawable/baseline_image" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ft_btn_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/yellow"
+        android:visibility="invisible"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="159dp"
+        app:srcCompat="@drawable/baseline_videocam" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
