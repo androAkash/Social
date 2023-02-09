@@ -7,3 +7,4 @@ work done in show username and profile picture
 work done in search function
 work done in post Like section need some ui changes
 video posting ongoling
+just done video uploading feature lot of work to be done, showing those videos
