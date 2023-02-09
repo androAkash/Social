@@ -52,7 +52,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.ftBtnVideo.setOnClickListener {
-            Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@MainActivity, VideoPostActivity::class.java)
+            startActivity(intent)
         }
     }
 
